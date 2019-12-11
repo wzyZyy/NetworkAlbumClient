@@ -31,5 +31,6 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/ui_login_btn" />
+        android:text="@string/ui_login_btn"
+        android:id="@+id/login_btn"/>
 </LinearLayout>
