@@ -15,6 +15,13 @@ import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class HttpRequest {
+    /**
+     * 用户登录
+     *
+     * @param loginActivity
+     * @param userAccount
+     * @param userPassword
+     */
     public static void login(final Context loginActivity, String userAccount, String userPassword) {
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
