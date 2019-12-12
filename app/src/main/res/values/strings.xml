@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">NetworkAlbumClient</string>
-<!--    登录界面-->
+    <!--    登录界面-->
     <string name="ui_login_label_account">账号</string>
     <string name="ui_login_input_account_tip">请输入账号</string>
     <string name="ui_login_label_password">密码</string>
     <string name="ui_login_input_password_tip">请输入密码</string>
     <string name="ui_login_btn">登录</string>
 
-<!--    注册页面-->
+    <!--    注册页面-->
     <string name="ui_register_label_account">账号</string>
     <string name="ui_register_input_account_tip">请输入账号</string>
     <string name="ui_register_label_password">密码</string>
