@@ -29,8 +29,14 @@
         android:inputType="textPassword" />
 
     <Button
+        android:id="@+id/login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/ui_login_btn"
-        android:id="@+id/login_btn"/>
+        android:text="@string/ui_login_btn" />
+
+    <EditText
+        android:id="@+id/login_link_to_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="没有账号，去注册" />
 </LinearLayout>

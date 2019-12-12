@@ -1,5 +1,6 @@
 package cn.zuel.wlyw.networkalbumclient.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,8 @@ public class LoginActivity extends BaseActivity {
         final EditText userPasswordInput = (EditText) findViewById(R.id.login_input_user_password);
         // 登录按钮
         Button loginBtn = (Button) findViewById(R.id.login_btn);
+        // 去注册跳转链接
+        EditText login_link_to_register = (EditText) findViewById(R.id.login_link_to_register);
 
         // 为登录按钮设置监听事件
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -30,6 +33,16 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View view) {
                 Toast.makeText(LoginActivity.this, "登录验证", Toast.LENGTH_SHORT).show();
                 HttpRequest.login(LoginActivity.this, userAccountInput.getText().toString(), userPasswordInput.getText().toString());
+            }
+        });
+
+        // 为跳转链接设置监听事件
+        login_link_to_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(LoginActivity.this, "去注册", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }
