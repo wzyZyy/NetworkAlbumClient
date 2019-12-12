@@ -28,13 +28,13 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
 
         // 用户登录账号
-        final EditText userAccountInput = (EditText) findViewById(R.id.login_input_user_account);
+        final EditText userAccountInput = findViewById(R.id.login_input_user_account);
         // 用户登录密码
-        final EditText userPasswordInput = (EditText) findViewById(R.id.login_input_user_password);
+        final EditText userPasswordInput = findViewById(R.id.login_input_user_password);
         // 登录按钮
-        Button loginBtn = (Button) findViewById(R.id.login_btn);
+        Button loginBtn = findViewById(R.id.login_btn);
         // 去注册跳转链接
-        EditText login_link_to_register = (EditText) findViewById(R.id.login_link_to_register);
+        EditText login_link_to_register = findViewById(R.id.login_link_to_register);
 
         // 为登录按钮设置监听事件
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -61,8 +61,8 @@ public class LoginActivity extends BaseActivity {
     /**
      * 用户登录
      *
-     * @param userAccount
-     * @param userPassword
+     * @param userAccount 用户手机号
+     * @param userPassword 用户密码
      */
     public void login(String userAccount, String userPassword) {
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
@@ -93,6 +93,8 @@ public class LoginActivity extends BaseActivity {
 
                 if (resultCode.equals("4000")) {
                     Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, IndexActivity.class);
+                    startActivity(intent);
                 } else {
                     Toast.makeText(LoginActivity.this, "登录失败，账号或密码错误", Toast.LENGTH_SHORT).show();
                 }
