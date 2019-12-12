@@ -31,7 +31,7 @@ public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSe
 
     private void initView() {
         manager = getSupportFragmentManager();
-        tb = (BottomTabBar) findViewById(R.id.tb);
+        tb = findViewById(R.id.tb);
         bars = new ArrayList<>();
         bars.add(new BarEntity("首页",R.drawable.home_select,R.drawable.home_unselect));
         bars.add(new BarEntity("图库",R.drawable.pic_select,R.drawable.pic_unselect));
