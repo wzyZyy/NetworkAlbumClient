@@ -194,7 +194,7 @@ public class BottomTabBar extends LinearLayout {
      * 选择切换的监听，在这里处理切换fragment,防止重复创建
      */
     public interface OnSelectListener {
-        public void onSelect(int position);
+        void onSelect(int position);
     }
 
     public BottomTabBar setOnSelectListener(OnSelectListener onSelectListener) {
