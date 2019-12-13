@@ -12,4 +12,5 @@ public class MainConfig {
     public final static String USER_REGISTER_URL = REQUEST_URL + "user/register";
     public final static String ALBUM_GET_URL = REQUEST_URL + "album/getAlbums";
     public final static String GET_IMAGES_URL = REQUEST_URL + "image/getImages";
+    public final static String UPLOAD_IMAGE_URL = REQUEST_URL + "image/uploadImages";
 }
