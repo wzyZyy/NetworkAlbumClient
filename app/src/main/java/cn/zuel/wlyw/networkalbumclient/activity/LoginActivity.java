@@ -50,8 +50,8 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(LoginActivity.this, "去注册", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                // 启动活动 RegisterActivity
+                RegisterActivity.actionStart(LoginActivity.this);
             }
         });
     }
@@ -93,8 +93,8 @@ public class LoginActivity extends BaseActivity {
 
                 if (resultCode.equals("4000")) {
                     Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, IndexActivity.class);
-                    startActivity(intent);
+                    // 启动活动 IndexActivity
+                    IndexActivity.actionStart(LoginActivity.this);
                 } else {
                     Toast.makeText(LoginActivity.this, "登录失败，账号或密码错误", Toast.LENGTH_SHORT).show();
                 }

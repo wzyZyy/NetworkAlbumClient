@@ -1,5 +1,7 @@
 package cn.zuel.wlyw.networkalbumclient.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -40,6 +42,11 @@ public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSe
     private static final String TAG = "IndexActivity";
     // 用于保存相册信息
     private List<Album> albumList = new ArrayList<>();
+
+    public static void actionStart(Context context) {
+        Intent intent = new Intent(context, IndexActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +98,8 @@ public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSe
      * @param a_id
      */
     public void viewImageByAlbum(int a_id) {
-
+        // 启动活动ImageActivity
+        ImageActivity.actionStart(IndexActivity.this, a_id);
     }
 
     public void deleteAlbum(int a_id) {

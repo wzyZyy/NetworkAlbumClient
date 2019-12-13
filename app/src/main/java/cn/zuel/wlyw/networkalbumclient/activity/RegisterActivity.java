@@ -1,5 +1,7 @@
 package cn.zuel.wlyw.networkalbumclient.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +23,11 @@ import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class RegisterActivity extends BaseActivity {
+
+    public static void actionStart(Context context) {
+        Intent intent = new Intent(context, IndexActivity.class);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
