@@ -65,6 +65,7 @@ public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSe
                     homeFragment = new HomeFragment();
                 }
                 tb.switchContent(homeFragment);
+                // 获取相册
                 getAlbums();
                 break;
             case 1:
