@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import cn.zuel.wlyw.networkalbumclient.R;
 
-/**
- * Created by WZH on 2016/11/5.
- */
 public class HomeFragment extends Fragment {
 
     @Override
