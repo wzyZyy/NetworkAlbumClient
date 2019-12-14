@@ -122,9 +122,13 @@ public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSe
                 Log.d(TAG, "onSuccess: " + responseString);
 
                 String data = "";
+                String resultCode = "";
+                String resultDesc = "";
                 try {
                     JSONObject jsonObject = new JSONObject(responseString);
                     data = jsonObject.getString("data");
+                    resultCode = jsonObject.getString("resultCode");
+                    resultDesc = jsonObject.getString("resultDesc");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

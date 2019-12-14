@@ -35,10 +35,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         ViewHolder(View view) {
             super(view);
             imageView = view;
-            imageImage = view.findViewById(R.id.itemImage);
-            imageName = view.findViewById(R.id.itemName);
-            imageTime = view.findViewById(R.id.itemTime);
-            deleteImage = view.findViewById(R.id.deleteItem);
+            imageImage = view.findViewById(R.id.iItemImage);
+            imageName = view.findViewById(R.id.iItemName);
+            imageTime = view.findViewById(R.id.iItemTime);
+            deleteImage = view.findViewById(R.id.iDeleteItem);
         }
     }
 

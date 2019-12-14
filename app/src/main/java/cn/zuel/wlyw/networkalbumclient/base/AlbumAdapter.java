@@ -33,10 +33,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         ViewHolder(View view) {
             super(view);
             albumView = view;
-            albumImage = view.findViewById(R.id.itemImage);
-            albumName = view.findViewById(R.id.itemName);
-            albumTime = view.findViewById(R.id.itemTime);
-            deleteAlbum = view.findViewById(R.id.deleteItem);
+            albumImage = view.findViewById(R.id.aItemImage);
+            albumName = view.findViewById(R.id.aItemName);
+            albumTime = view.findViewById(R.id.aItemTime);
+            deleteAlbum = view.findViewById(R.id.aDeleteItem);
         }
     }
 
@@ -50,12 +50,18 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.album_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
+        /*
+        点击相册查看该相册的所有照片
+         */
         holder.albumView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Album album = albumList.get(position);
                 Toast.makeText(v.getContext(), album.getA_id() + " " + album.getA_name(), Toast.LENGTH_SHORT).show();
+                /*
+                查看该相册下的所有照片
+                 */
                 indexActivity.viewImageByAlbum(album.getA_id());
             }
         });
