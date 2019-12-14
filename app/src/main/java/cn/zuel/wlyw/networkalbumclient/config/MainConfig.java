@@ -13,5 +13,5 @@ public class MainConfig {
     public final static String ALBUM_GET_URL = REQUEST_URL + "album/getAlbums";
     public final static String ALBUM_DELETE_URL = REQUEST_URL + "album/deleteAlbum";
     public final static String GET_IMAGES_URL = REQUEST_URL + "image/getImages";
-    public final static String UPLOAD_IMAGE_URL = REQUEST_URL + "image/uploadImages";
+    public final static String UPLOAD_IMAGE_URL = REQUEST_URL + "image/uploadImage";
 }

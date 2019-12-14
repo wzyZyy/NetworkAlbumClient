@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.zuel.wlyw.networkalbumclient.R;
@@ -39,21 +41,28 @@ import cn.zuel.wlyw.networkalbumclient.kit.ImageKit;
 import cz.msebera.android.httpclient.Header;
 
 public class ImageActivity extends BaseActivity {
-
     private static final String TAG = "ImageActivity";
     // 请求码
     private static final int TAKE_PHOTO_REQUEST_CODE = 120;
     private static final int PICTURE_REQUEST_CODE = 911;
     private Uri currentTakePhotoUri;
+    // 保存收到的图片的信息
+    private List<Image> imageList = new ArrayList<>();
+    // 当前图片所属的相册id
+    private int a_id;
 
-    private List<Image> imageList = new ArrayList<>();    // 用于保存收到的图片的信息
-    private int a_id;    // 保存当前图片所属的相册
-
+    /**
+     * 启动该活动的接口
+     *
+     * @param context 活动启动方
+     * @param a_id    相册id
+     */
     public static void actionStart(Context context, int a_id) {
         Intent intent = new Intent(context, ImageActivity.class);
         intent.putExtra("a_id", a_id);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,21 +72,29 @@ public class ImageActivity extends BaseActivity {
         a_id = intent.getIntExtra("a_id", 0);
         // 获取图片
         getImages(a_id);
-        Log.d(TAG, "onCreate: end");
     }
 
     /**
-     * 在右上角添加按钮
-     *
-     * @param menu 自定义的图形
+     * 取得列表后加载RecycleView
      */
+    private void setRecycleView() {
+        RecyclerView recyclerView = findViewById(R.id.recycle_view_image);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(ImageActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        ImageAdapter imageAdapter = new ImageAdapter(imageList, ImageActivity.this);
+        recyclerView.setAdapter(imageAdapter);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // 添加上传图片的菜单项
         getMenuInflater().inflate(R.menu.upload_image, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // 响应菜单项的选择结果
         switch (item.getItemId()) {
             case R.id.addImageFromDCIM:
                 Toast.makeText(this, "从相册选择照片", Toast.LENGTH_SHORT).show();
@@ -85,6 +102,7 @@ public class ImageActivity extends BaseActivity {
                 break;
             case R.id.addImageFromCamera:
                 Toast.makeText(this, "选择拍照上传", Toast.LENGTH_SHORT).show();
+                chooseImageFromCamera();
                 break;
             default:
                 break;
@@ -92,19 +110,48 @@ public class ImageActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * 从相册选取图片
+     */
     private void chooseImageFromDCIM() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent, PICTURE_REQUEST_CODE);
     }
 
+    /**
+     * 从相机选择拍照上传
+     */
+    private void chooseImageFromCamera() {
+        // 创建File对象，用于存储拍照后的图片
+        File outputImage = new File(getExternalCacheDir(),
+                "output_image.jpg");
+        try {
+            if (outputImage.exists()) {
+                outputImage.delete();
+            }
+            outputImage.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (Build.VERSION.SDK_INT >= 24) {
+            currentTakePhotoUri = FileProvider.getUriForFile(ImageActivity.this,
+                    "cn.zuel.wlyw.networkalbumclient.fileprovider", outputImage);
+        } else {
+            currentTakePhotoUri = Uri.fromFile(outputImage);
+        }
+        // 启动相机程序
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, currentTakePhotoUri);
+        startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
+    }
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == PICTURE_REQUEST_CODE) {
-                // 处理选择的图片
+                // 处理从相册选择上传的图片
                 assert data != null;
-//                handleInputPhoto(data.getData());
                 try {
                     openConfirmDialog(data.getData());
                 } catch (IOException e) {
@@ -112,7 +159,6 @@ public class ImageActivity extends BaseActivity {
                 }
             } else if (requestCode == TAKE_PHOTO_REQUEST_CODE) {
                 // 如果拍照成功，加载图片并识别
-//                handleInputPhoto(currentTakePhotoUri);
                 try {
                     openConfirmDialog(currentTakePhotoUri);
                 } catch (IOException e) {
@@ -122,14 +168,18 @@ public class ImageActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 用户确定与否对话框
+     *
+     * @param uri
+     * @throws IOException
+     */
     public void openConfirmDialog(final Uri uri) throws IOException {
-        Log.d(TAG, "openConfirmDialog: " + uri);
-
+        Log.d(TAG, "上传照片，打开用户交互对话框：" + uri);
         // 新建ImageView，在Dialog中预览要上传的图片
         final ImageView imageView = new ImageView(this);
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
         imageView.setImageBitmap(bitmap);
-
         // Dialog对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("确认上传");
@@ -137,12 +187,13 @@ public class ImageActivity extends BaseActivity {
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(ImageActivity.this, "你点了确认", Toast.LENGTH_SHORT).show();
+                // 图片的绝对路径
                 String path = ImageKit.getRealPathFromUri(ImageActivity.this, uri);
-                Log.d(TAG, "openConfirmDialog: " + path);
+                Log.d(TAG, "用户确认上传图片: " + path);
                 File file = new File(path);
                 try {
-                    ImageActivity.this.addImage(a_id, file);
+                    // 上传图片到指定相册
+                    ImageActivity.this.uploadImage(a_id, file);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -151,32 +202,31 @@ public class ImageActivity extends BaseActivity {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(ImageActivity.this, "你点了取消", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "用户取消上传图片");
             }
         });
         builder.show();
     }
+
     /**
      * 查看相册中的照片
      *
-     * @param a_id
+     * @param a_id 相册id
      */
     public void getImages(int a_id) {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("a_id", a_id);
-        Log.d(TAG, "getImages: " + MainConfig.GET_IMAGES_URL);
         client.post(MainConfig.GET_IMAGES_URL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(ImageActivity.this, "网络错误，查询图片失败", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure: net error view image fail");
+                Toast.makeText(ImageActivity.this, "网络错误，获取图片失败", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "获取相册图片失败");
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Log.d(TAG, "onSuccess: view label success");
-                Log.d(TAG, "onSuccess: " + responseString);
+                Log.d(TAG, "成功获取相册中的图片，服务器的响应结果: " + responseString);
 
                 String data = "";
                 String resultCode = "";
@@ -189,52 +239,56 @@ public class ImageActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                // 打印结果
                 Toast.makeText(ImageActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
                 if (resultCode.equals("6021")) {
                     imageList = JSON.parseArray(data, Image.class);
                     Log.d(TAG, "onSuccess: " + imageList);
+                    setRecycleView();
                 }
-                setRecycleView();
-
             }
         });
     }
 
-    public void addImage(final int a_id, File imageFile) throws FileNotFoundException {
+    /**
+     * 上传图片文件到指定相册
+     *
+     * @param a_id      相册id
+     * @param imageFile 上传的图片文件
+     * @throws FileNotFoundException
+     */
+    public void uploadImage(final int a_id, File imageFile) throws FileNotFoundException {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("files", imageFile, "Content-Type");
         params.put("a_id", a_id);
-        Log.d(TAG, "addImage: " + MainConfig.UPLOAD_IMAGE_URL);
+        params.put("file", imageFile, "Content-Type");
         client.post(MainConfig.UPLOAD_IMAGE_URL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(ImageActivity.this, "网络错误，添加图片失败", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure: net error add image fail");
-
+                Toast.makeText(ImageActivity.this, "网络错误，上传图片失败", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "上传图片失败，与服务器连接错误");
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                if (responseString.equals("success")) {
-                    Toast.makeText(ImageActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onSuccess: add image success");
+                Log.d(TAG, "成功上传图片，服务器响应结果：" + responseString);
+                String resultCode = "";
+                String resultDesc = "";
+                try {
+                    JSONObject jsonObject = new JSONObject(responseString);
+                    resultCode = jsonObject.getString("resultCode");
+                    resultDesc = jsonObject.getString("resultDesc");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(ImageActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
+                if (resultCode.equals("6016")) {
+                    Toast.makeText(ImageActivity.this, "上传图片成功", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "上传图片成功");
+                    // 刷新
                     getImages(a_id);
-                } else {
-                    Toast.makeText(ImageActivity.this, "未知错误，添加图片失败", Toast.LENGTH_SHORT).show();
+                    setRecycleView();
                 }
             }
         });
-    }
-    /**
-     * 取得列表后加载RecycleView
-     */
-    private void setRecycleView() {
-        RecyclerView recyclerView = findViewById(R.id.recycle_view_image);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(ImageActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        ImageAdapter imageAdapter = new ImageAdapter(imageList, ImageActivity.this);
-        recyclerView.setAdapter(imageAdapter);
     }
 }

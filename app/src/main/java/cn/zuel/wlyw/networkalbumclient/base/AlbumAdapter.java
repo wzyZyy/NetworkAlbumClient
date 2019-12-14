@@ -50,8 +50,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // 子项最外层布局
+        // 将album_item布局加载进来
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.album_item, parent, false);
+        // 把加载出来的布局传入到构造函数
         final ViewHolder holder = new ViewHolder(view);
         /*
         点击相册查看该相册的所有照片
@@ -80,11 +81,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
                 indexActivity.deleteAlbum(album.getA_id());
             }
         });
+        // 将ViewHolder的实例返回
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // 对RecyclerView子项的数据进行赋值
         Album album = albumList.get(position);
         holder.albumImage.setImageResource(R.drawable.file_icon);
         holder.albumName.setText(album.getA_desc());

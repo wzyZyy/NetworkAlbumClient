@@ -190,7 +190,9 @@ public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSe
                     e.printStackTrace();
                 }
                 Toast.makeText(IndexActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
-                if (resultCode.equals("6025")) {// 删除相册成功
+                if (resultCode.equals("6025")) {
+                    // 删除相册成功，刷新
+                    getAlbums();
                     setRecycleView();
                 }
             }
