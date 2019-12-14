@@ -1,4 +1,4 @@
-package cn.zuel.wlyw.networkalbumclient.base;
+package cn.zuel.wlyw.networkalbumclient.activity;
 
 import android.os.Bundle;
 import android.util.Log;

@@ -1,6 +1,5 @@
 package cn.zuel.wlyw.networkalbumclient.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.zuel.wlyw.networkalbumclient.R;
-import cn.zuel.wlyw.networkalbumclient.base.BaseActivity;
 import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
 import cz.msebera.android.httpclient.Header;
 

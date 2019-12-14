@@ -18,7 +18,6 @@ import org.json.JSONObject;
 
 import androidx.annotation.Nullable;
 import cn.zuel.wlyw.networkalbumclient.R;
-import cn.zuel.wlyw.networkalbumclient.base.BaseActivity;
 import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
 import cz.msebera.android.httpclient.Header;
 

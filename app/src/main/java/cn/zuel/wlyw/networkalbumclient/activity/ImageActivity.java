@@ -32,7 +32,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.zuel.wlyw.networkalbumclient.R;
-import cn.zuel.wlyw.networkalbumclient.base.BaseActivity;
 import cn.zuel.wlyw.networkalbumclient.base.Image;
 import cn.zuel.wlyw.networkalbumclient.base.ImageAdapter;
 import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
