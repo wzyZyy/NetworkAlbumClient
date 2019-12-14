@@ -26,18 +26,18 @@ import cn.zuel.wlyw.networkalbumclient.activity.ui.PersonFragment;
 import cn.zuel.wlyw.networkalbumclient.activity.ui.PicFragment;
 import cn.zuel.wlyw.networkalbumclient.base.Album;
 import cn.zuel.wlyw.networkalbumclient.base.AlbumAdapter;
-import cn.zuel.wlyw.networkalbumclient.base.BarEntity;
+import cn.zuel.wlyw.networkalbumclient.base.Bar;
 import cn.zuel.wlyw.networkalbumclient.base.BottomTabBar;
 import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSelectListener {
-    private BottomTabBar tb ;
-    private List<BarEntity> bars ;
-    private HomeFragment homeFragment ;
-    private PicFragment picFragment ;
-    private PersonFragment personFragment ;
-    private FragmentManager manager ;
+    private BottomTabBar tb;
+    private List<Bar> bars;
+    private HomeFragment homeFragment;
+    private PicFragment picFragment;
+    private PersonFragment personFragment;
+    private FragmentManager manager;
 
     private static final String TAG = "IndexActivity";
     // 用于保存相册信息
@@ -59,16 +59,17 @@ public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSe
         manager = getSupportFragmentManager();
         tb = findViewById(R.id.tb);
         bars = new ArrayList<>();
-        bars.add(new BarEntity("首页",R.drawable.home_select,R.drawable.home_unselect));
-        bars.add(new BarEntity("图库",R.drawable.pic_select,R.drawable.pic_unselect));
-        bars.add(new BarEntity("个人",R.drawable.person_select,R.drawable.person_unselect));
+        bars.add(new Bar("首页", R.drawable.home_select, R.drawable.home_unselect));
+        bars.add(new Bar("图库", R.drawable.pic_select, R.drawable.pic_unselect));
+        bars.add(new Bar("个人", R.drawable.person_select, R.drawable.person_unselect));
         tb.setManager(manager).setOnSelectListener(this).setBars(bars);
     }
+
     @Override
     public void onSelect(int position) {
-        switch (position){
+        switch (position) {
             case 0:
-                if (homeFragment==null){
+                if (homeFragment == null) {
                     homeFragment = new HomeFragment();
                 }
                 tb.switchContent(homeFragment);
@@ -76,13 +77,13 @@ public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSe
                 getAlbums();
                 break;
             case 1:
-                if (picFragment==null){
+                if (picFragment == null) {
                     picFragment = new PicFragment();
                 }
                 tb.switchContent(picFragment);
                 break;
             case 2:
-                if (personFragment==null){
+                if (personFragment == null) {
                     personFragment = new PersonFragment();
                 }
                 tb.switchContent(personFragment);

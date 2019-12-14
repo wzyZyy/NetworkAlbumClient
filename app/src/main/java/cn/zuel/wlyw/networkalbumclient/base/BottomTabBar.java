@@ -40,7 +40,7 @@ public class BottomTabBar extends LinearLayout {
         return this;
     }
 
-    public void setBars(List<BarEntity> bars) {
+    public void setBars(List<Bar> bars) {
         init(bars);
     }
 
@@ -66,7 +66,7 @@ public class BottomTabBar extends LinearLayout {
      *
      * @param bars
      */
-    private void init(final List<BarEntity> bars) {
+    private void init(final List<Bar> bars) {
         setOrientation(LinearLayout.VERTICAL);
         setBackgroundColor(backgroundColor);
         if (bars == null || bars.size() <= 0) {
@@ -133,7 +133,7 @@ public class BottomTabBar extends LinearLayout {
      *
      * @param position
      */
-    public void select(int position, List<BarEntity> bars) {
+    public void select(int position, List<Bar> bars) {
         if (getChildAt(1) == null) {
             return;
         }

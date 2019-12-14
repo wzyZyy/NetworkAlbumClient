@@ -1,6 +1,6 @@
 package cn.zuel.wlyw.networkalbumclient.base;
 
-public class BarEntity {
+public class Bar {
     //导航菜单文字
     private String tabText;
     //选中后的tab的图片
@@ -8,7 +8,7 @@ public class BarEntity {
     //未选中时图片
     private int tabUnSelectedResId;
 
-    public BarEntity(String tabText, int tabSelectedResId, int tabUnSelectedResId) {
+    public Bar(String tabText, int tabSelectedResId, int tabUnSelectedResId) {
         this.tabText = tabText;
         this.tabSelectedResId = tabSelectedResId;
         this.tabUnSelectedResId = tabUnSelectedResId;
