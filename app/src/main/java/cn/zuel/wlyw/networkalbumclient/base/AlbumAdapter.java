@@ -24,7 +24,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        // 子项最外层布局的实例
         View albumView;
+        // 子项
         ImageView albumImage;
         TextView albumName;
         TextView albumTime;
@@ -48,6 +50,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // 子项最外层布局
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.album_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         /*
@@ -58,19 +61,22 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Album album = albumList.get(position);
-                Toast.makeText(v.getContext(), album.getA_id() + " " + album.getA_name(), Toast.LENGTH_SHORT).show();
-                /*
-                查看该相册下的所有照片
-                 */
+                Toast.makeText(v.getContext(), "查看相册：" + album.getA_name(), Toast.LENGTH_SHORT).show();
+
+                // 查看该相册下的所有照片，启动ImageActivity由：IndexActivity发起
                 indexActivity.viewImageByAlbum(album.getA_id());
             }
         });
+        /*
+         * 删除相册
+         */
         holder.deleteAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Album album = albumList.get(position);
-                Toast.makeText(v.getContext(), "delete " + album.getA_id(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "删除相册：" + album.getA_name(), Toast.LENGTH_SHORT).show();
+                // 删除相册
                 indexActivity.deleteAlbum(album.getA_id());
             }
         });
