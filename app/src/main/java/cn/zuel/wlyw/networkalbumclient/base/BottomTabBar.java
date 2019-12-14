@@ -64,7 +64,7 @@ public class BottomTabBar extends LinearLayout {
     /**
      * 初始化
      *
-     * @param bars
+     * @param bars 底部标签
      */
     private void init(final List<Bar> bars) {
         setOrientation(LinearLayout.VERTICAL);
@@ -72,24 +72,19 @@ public class BottomTabBar extends LinearLayout {
         if (bars == null || bars.size() <= 0) {
             return;
         }
-        /**
-         * 最上面添加一个Fragment
-         */
+        // 最上面添加一个Fragment
         FrameLayout fl = new FrameLayout(getContext());
         fl.setId(R.id.f_content);
         fl.setBackgroundColor(Color.parseColor("#ffffff"));
         LinearLayout.LayoutParams flp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
         addView(fl, flp);
-        /**
-         * 添加一根华丽的分割线
-         */
+        // 添加一根华丽的分割线
         View line = new View(getContext());
         line.setBackgroundColor(Color.parseColor("#cccccc"));
         ViewGroup.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
         addView(line, llp);
-        /**
-         * 添加底部导航栏菜单
-         */
+
+        // 添加底部导航栏菜单
         LinearLayout bottom = new LinearLayout(this.getContext());
         bottom.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -122,16 +117,15 @@ public class BottomTabBar extends LinearLayout {
             bottom.addView(bar, blp);
         }
         addView(bottom, lp);
-        /**
-         * 默认选中第一个菜单栏
-         */
+
+        // 默认选中第一个菜单栏
         select(0, bars);
     }
 
     /**
      * 选择了第几个tab,切换image选中的图标和文字颜色
      *
-     * @param position
+     * @param position 选中第几个tab
      */
     public void select(int position, List<Bar> bars) {
         if (getChildAt(1) == null) {
@@ -158,7 +152,7 @@ public class BottomTabBar extends LinearLayout {
     /**
      * 切换的时候调用接口
      *
-     * @param position
+     * @param position 选中第几个tab
      */
     private void switchByPosition(int position) {
         if (onSelectListener != null) {
