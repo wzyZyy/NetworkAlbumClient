@@ -5,7 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import cn.zuel.wlyw.networkalbumclient.controller.ActivityController;
 
 public class BaseActivity extends AppCompatActivity {
 

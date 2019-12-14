@@ -1,4 +1,4 @@
-package cn.zuel.wlyw.networkalbumclient.controller;
+package cn.zuel.wlyw.networkalbumclient.activity;
 
 import android.app.Activity;
 
