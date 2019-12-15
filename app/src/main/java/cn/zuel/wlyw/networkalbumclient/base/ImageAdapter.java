@@ -1,5 +1,6 @@
 package cn.zuel.wlyw.networkalbumclient.base;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     private List<Image> imageList;
     private ImageActivity imageActivity;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+    private static final String TAG = "ImageAdapter";
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View imageView;
@@ -75,6 +77,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Image image = imageList.get(position);
+        Log.d(TAG, "onBindViewHolder: imagePath" + MainConfig.REQUEST_URL + image.getI_path());
         Glide.with(imageActivity)
                 .load(MainConfig.REQUEST_URL + image.getI_path())
                 .placeholder(R.drawable.loading)
