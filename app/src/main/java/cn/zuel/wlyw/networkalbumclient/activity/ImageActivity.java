@@ -222,7 +222,10 @@ public class ImageActivity extends BaseActivity {
         });
         builder.show();
     }
-
+    public void previewImage(String i_path) {
+        // 启动活动PreviewActivity
+       PreviewActivity.actionStart(ImageActivity.this, i_path);
+    }
     /**
      * 查看相册中的照片
      *

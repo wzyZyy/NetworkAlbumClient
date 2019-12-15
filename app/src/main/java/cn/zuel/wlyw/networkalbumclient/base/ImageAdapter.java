@@ -58,6 +58,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 int position = holder.getAdapterPosition();
                 Image image = imageList.get(position);
                 Toast.makeText(v.getContext(), image.getI_id() + " " + image.getI_name(), Toast.LENGTH_SHORT).show();
+                // 跳转到PreviewActivity，预览大图，由ImageActivity发起
+                imageActivity.previewImage(image.getI_path());
             }
         });
         holder.deleteImage.setOnClickListener(new View.OnClickListener() {
