@@ -27,5 +27,6 @@
     <string name="save_picture_success">图片成功保存至%s目录</string>
 
     <string name="share_picture">分享图片</string>
+    <string name="share">来自网络相册的分享</string>
 
 </resources>
