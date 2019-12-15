@@ -22,4 +22,8 @@
     <string name="choose_from_camera">相机拍摄</string>
     <string name="choose_from_DCIM">从相册选取</string>
 
+    <string name="save_picture">保存图片</string>
+    <string name="save_picture_failed">保存失败</string>
+    <string name="save_picture_success">图片成功保存至%s目录</string>
+
 </resources>
