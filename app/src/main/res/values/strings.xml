@@ -26,4 +26,6 @@
     <string name="save_picture_failed">保存失败</string>
     <string name="save_picture_success">图片成功保存至%s目录</string>
 
+    <string name="share_picture">分享图片</string>
+
 </resources>

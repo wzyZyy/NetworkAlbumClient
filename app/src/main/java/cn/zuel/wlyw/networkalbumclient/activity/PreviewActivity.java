@@ -26,12 +26,8 @@ public class PreviewActivity extends BaseActivity {
     private static final String TAG = "PreviewActivity";
     // 待显示图片的路径
     private String i_path;
-    // 显示图片
+    // 显示图片视图
     private ImageView imageView;
-    //长按后显示的 Item
-    final String[] items = new String[]{"保存图片"};
-    //图片转成Bitmap数组
-    final Bitmap[] bitmap = new Bitmap[1];
 
     /**
      * 启动该活动的接口
@@ -56,18 +52,28 @@ public class PreviewActivity extends BaseActivity {
         i_path = intent.getStringExtra("i_path");
         // 预览图片
         previewImage();
+        // 长按响应事件
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(PreviewActivity.this);
-                builder.setItems(new String[]{getResources().getString(R.string.save_picture)}, new DialogInterface.OnClickListener() {
+                builder.setItems(new String[]{getResources().getString(R.string.save_picture), getResources().getString(R.string.share_picture)}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        imageView.setDrawingCacheEnabled(true);
-                        Bitmap bitmap = imageView.getDrawingCache();
-                        if (bitmap != null) {
-                            //这句代码时调用保存的核心
-                            new SaveImageTask().execute(bitmap);
+                        switch (i) {
+                            case 0:
+                                imageView.setDrawingCacheEnabled(true);
+                                Bitmap bitmap = imageView.getDrawingCache();
+                                if (bitmap != null) {
+                                    //这句代码时调用保存的核心
+                                    new SaveImageTask().execute(bitmap);
+                                }
+                                break;
+                            case 1:
+
+                                break;
+                            default:
+                                break;
                         }
                     }
                 });
@@ -76,22 +82,21 @@ public class PreviewActivity extends BaseActivity {
             }
         });
     }
+
     //点击长按保存图片
     class SaveImageTask extends AsyncTask<Bitmap, Void, String> {
         @Override
         protected String doInBackground(Bitmap... params) {
             String result = getResources().getString(R.string.save_picture_failed);
             try {
-
                 String sdcard = Environment.getExternalStorageDirectory().getAbsolutePath();
                 File file = new File(sdcard + "/Pictures");
                 if (!file.exists()) {
                     file.mkdirs();
                 }
-
                 String fileName = System.currentTimeMillis() + ".jpg";
                 File imageFile = new File(file.getAbsolutePath(), fileName);
-                FileOutputStream outStream = null;
+                FileOutputStream outStream;
                 outStream = new FileOutputStream(imageFile);
                 Bitmap image = params[0];
                 image.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
@@ -112,6 +117,7 @@ public class PreviewActivity extends BaseActivity {
             imageView.setDrawingCacheEnabled(false);
         }
     }
+
     /**
      * 大图预览图片
      */
