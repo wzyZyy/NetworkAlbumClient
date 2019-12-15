@@ -49,6 +49,7 @@ public class ImageKit {
             Log.d(TAG, "getRealPathFromUri: content uri");
             // 如果是 content 类型的 Uri
 //            filePath = getDataColumn(context, uri, null, null);
+            // 在此，我生硬地拼接了图片地物理地址
             filePath = getRealFilePathThroughCamera(context, uri);
             Log.d(TAG, "getRealPathFromUri: path: " + filePath);
         } else if ("file".equals(uri.getScheme())) {
@@ -84,29 +85,11 @@ public class ImageKit {
     }
 
     /**
-     * @param uri the Uri to check
-     * @return Whether the Uri authority is MediaProvider
-     */
-    private static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri the Uri to check
-     * @return Whether the Uri authority is DownloadsProvider
-     */
-    private static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-
-    /**
-     *  相机拍照上传，生硬地获得图片地真实地址
+     * 相机拍照上传，生硬地获得图片地真实地址
      */
     public static String getRealFilePathThroughCamera(Context context, Uri uri) {
         if (null == uri) return null;
         final String scheme = uri.getScheme();
-        Log.d(TAG, "getRealFilePath: scheme ----->" + scheme);
         String realPath = null;
         if (scheme == null)
             realPath = uri.getPath();
@@ -126,14 +109,11 @@ public class ImageKit {
                 cursor.close();
             }
         }
-        Log.d(TAG, "getRealFilePath: realPath------->" + realPath);
         if (TextUtils.isEmpty(realPath)) {
             if (uri != null) {
                 String uriString = uri.toString();
-                Log.d(TAG, "getRealFilePath: uriString------->" + uriString);
                 int index = uriString.lastIndexOf("/");
                 String imageName = uriString.substring(index);
-                Log.d(TAG, "getRealFilePath: imageName--------->" + imageName);
                 File storageDir;
 
                 storageDir = Environment.getExternalStoragePublicDirectory(
@@ -142,17 +122,30 @@ public class ImageKit {
                 if (file.exists()) {
                     realPath = file.getAbsolutePath();
                     realPath = realPath.replaceFirst("files/Pictures", "cache");
-                    Log.d(TAG, "getRealFilePath: file exist----------->" + realPath);
                 } else {
                     storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                     File file1 = new File(storageDir, imageName);
                     realPath = file1.getAbsolutePath();
                     realPath = realPath.replaceFirst("files/Pictures", "cache");
-                    Log.d(TAG, "getRealFilePath: file not exist----------->" + realPath);
                 }
             }
         }
-        Log.d(TAG, "getRealFilePath: 结束--------->realPath: " + realPath);
         return realPath;
+    }
+
+    /**
+     * @param uri the Uri to check
+     * @return Whether the Uri authority is MediaProvider
+     */
+    private static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri the Uri to check
+     * @return Whether the Uri authority is DownloadsProvider
+     */
+    private static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 }
