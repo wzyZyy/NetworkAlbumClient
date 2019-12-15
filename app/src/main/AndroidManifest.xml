@@ -25,14 +25,22 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activity.ImageActivity"></activity>
-        <activity android:name=".activity.IndexActivity" />
-        <activity android:name=".activity.LoginActivity">
+        <activity
+            android:name=".activity.ImageActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".activity.IndexActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.LoginActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity android:name=".activity.RegisterActivity" />
     </application>

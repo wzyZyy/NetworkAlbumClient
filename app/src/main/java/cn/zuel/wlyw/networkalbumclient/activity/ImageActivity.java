@@ -123,9 +123,11 @@ public class ImageActivity extends BaseActivity {
      * 从相机选择拍照上传
      */
     private void chooseImageFromCamera() {
+        Log.d(TAG, "chooseImageFromCamera: 方法进入");
         // 创建File对象，用于存储拍照后的图片
         File outputImage = new File(getExternalCacheDir(),
                 "output_image.jpg");
+        Log.d(TAG, "chooseImageFromCamera: 创建File对象开始");
         try {
             if (outputImage.exists()) {
                 outputImage.delete();
@@ -134,17 +136,20 @@ public class ImageActivity extends BaseActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d(TAG, "chooseImageFromCamera: 创建File完成");
         if (Build.VERSION.SDK_INT >= 24) {
             currentTakePhotoUri = FileProvider.getUriForFile(ImageActivity.this,
                     "cn.zuel.wlyw.networkalbumclient.fileprovider", outputImage);
         } else {
             currentTakePhotoUri = Uri.fromFile(outputImage);
         }
+        Log.d(TAG, "chooseImageFromCamera: 启动相机");
         // 启动相机程序
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         intent.putExtra(MediaStore.EXTRA_OUTPUT, currentTakePhotoUri);
         startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -158,9 +163,10 @@ public class ImageActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             } else if (requestCode == TAKE_PHOTO_REQUEST_CODE) {
+                Log.d(TAG, "onActivityResult: 拍照成功");
                 // 如果拍照成功，加载图片并识别
                 try {
-                    openConfirmDialog(currentTakePhotoUri);
+                    openConfirmDialogThroughCamera(currentTakePhotoUri);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -189,6 +195,7 @@ public class ImageActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // 图片的绝对路径
                 String path = ImageKit.getRealPathFromUri(ImageActivity.this, uri);
+//                String path = ImageKit.getRealFilePathThroughCamera(ImageActivity.this, uri);
                 Log.d(TAG, "用户确认上传图片: " + path);
                 File file = new File(path);
                 try {
@@ -208,6 +215,45 @@ public class ImageActivity extends BaseActivity {
         builder.show();
     }
 
+    /**
+     * 用户确定与否对话框，相机拍照上传
+     *
+     * @param uri
+     * @throws IOException
+     */
+    public void openConfirmDialogThroughCamera(final Uri uri) throws IOException {
+        Log.d(TAG, "上传照片，打开用户交互对话框：" + uri);
+        // 新建ImageView，在Dialog中预览要上传的图片
+        final ImageView imageView = new ImageView(this);
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+        imageView.setImageBitmap(bitmap);
+        // Dialog对话框
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("确认上传");
+        builder.setView(imageView);
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 图片的绝对路径
+                String path = ImageKit.getRealFilePathThroughCamera(ImageActivity.this, uri);
+                Log.d(TAG, "用户确认上传图片: " + path);
+                File file = new File(path);
+                try {
+                    // 上传图片到指定相册
+                    ImageActivity.this.uploadImage(a_id, file);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "用户取消上传图片");
+            }
+        });
+        builder.show();
+    }
     /**
      * 查看相册中的照片
      *
