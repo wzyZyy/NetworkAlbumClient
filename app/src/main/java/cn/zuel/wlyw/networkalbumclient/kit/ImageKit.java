@@ -48,7 +48,8 @@ public class ImageKit {
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
             Log.d(TAG, "getRealPathFromUri: content uri");
             // 如果是 content 类型的 Uri
-            filePath = getDataColumn(context, uri, null, null);
+//            filePath = getDataColumn(context, uri, null, null);
+            filePath = getRealFilePathThroughCamera(context, uri);
             Log.d(TAG, "getRealPathFromUri: path: " + filePath);
         } else if ("file".equals(uri.getScheme())) {
             Log.d(TAG, "getRealPathFromUri: file uri");
