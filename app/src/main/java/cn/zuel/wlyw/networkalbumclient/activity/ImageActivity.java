@@ -45,6 +45,9 @@ public class ImageActivity extends BaseActivity {
     // 请求码
     private static final int TAKE_PHOTO_REQUEST_CODE = 120;
     private static final int PICTURE_REQUEST_CODE = 911;
+    // 拍照上传图片临时路径
+    private String currentImageCachePath;
+    // 从相册选择图片上传
     private Uri currentTakePhotoUri;
     // 保存收到的图片的信息
     private List<Image> imageList = new ArrayList<>();
@@ -127,6 +130,8 @@ public class ImageActivity extends BaseActivity {
         // 创建File对象，用于存储拍照后的图片
         File outputImage = new File(getExternalCacheDir(),
                 "output_image.jpg");
+        Log.d(TAG, "chooseImageFromCamera: 路径是：----->" + outputImage.getAbsolutePath());
+        currentImageCachePath = outputImage.getAbsolutePath();
         Log.d(TAG, "chooseImageFromCamera: 创建File对象开始");
         try {
             if (outputImage.exists()) {
@@ -195,7 +200,10 @@ public class ImageActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // 图片的绝对路径
                 String path = ImageKit.getRealPathFromUri(ImageActivity.this, uri);
-//                String path = ImageKit.getRealFilePathThroughCamera(ImageActivity.this, uri);
+                if (path == null) {
+                    // 拍照上传
+                    path = currentImageCachePath;
+                }
                 Log.d(TAG, "用户确认上传图片: " + path);
                 File file = new File(path);
                 try {

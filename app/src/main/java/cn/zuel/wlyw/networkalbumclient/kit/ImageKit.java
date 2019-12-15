@@ -48,9 +48,7 @@ public class ImageKit {
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
             Log.d(TAG, "getRealPathFromUri: content uri");
             // 如果是 content 类型的 Uri
-//            filePath = getDataColumn(context, uri, null, null);
-            // 在此，我生硬地拼接了图片地物理地址
-            filePath = getRealFilePathThroughCamera(context, uri);
+            filePath = getDataColumn(context, uri, null, null);
             Log.d(TAG, "getRealPathFromUri: path: " + filePath);
         } else if ("file".equals(uri.getScheme())) {
             Log.d(TAG, "getRealPathFromUri: file uri");
@@ -83,56 +81,6 @@ public class ImageKit {
         }
         return path;
     }
-
-    /**
-     * 相机拍照上传，生硬地获得图片地真实地址
-     */
-    public static String getRealFilePathThroughCamera(Context context, Uri uri) {
-        if (null == uri) return null;
-        final String scheme = uri.getScheme();
-        String realPath = null;
-        if (scheme == null)
-            realPath = uri.getPath();
-        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
-            realPath = uri.getPath();
-        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
-            Cursor cursor = context.getContentResolver().query(uri,
-                    new String[]{MediaStore.Images.ImageColumns.DATA},
-                    null, null, null);
-            if (null != cursor) {
-                if (cursor.moveToFirst()) {
-                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                    if (index > -1) {
-                        realPath = cursor.getString(index);
-                    }
-                }
-                cursor.close();
-            }
-        }
-        if (TextUtils.isEmpty(realPath)) {
-            if (uri != null) {
-                String uriString = uri.toString();
-                int index = uriString.lastIndexOf("/");
-                String imageName = uriString.substring(index);
-                File storageDir;
-
-                storageDir = Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_PICTURES);
-                File file = new File(storageDir, imageName);
-                if (file.exists()) {
-                    realPath = file.getAbsolutePath();
-                    realPath = realPath.replaceFirst("files/Pictures", "cache");
-                } else {
-                    storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                    File file1 = new File(storageDir, imageName);
-                    realPath = file1.getAbsolutePath();
-                    realPath = realPath.replaceFirst("files/Pictures", "cache");
-                }
-            }
-        }
-        return realPath;
-    }
-
     /**
      * @param uri the Uri to check
      * @return Whether the Uri authority is MediaProvider
