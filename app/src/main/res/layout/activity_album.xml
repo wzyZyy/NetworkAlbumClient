@@ -11,27 +11,40 @@
         android:id="@+id/album_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="50dp"
-        android:text="@string/choose_from_DCIM"/>
+        android:text="@string/create_album_name"
+        android:textSize="50dp" />
+
+    <EditText
+        android:id="@+id/album_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_album_desc"
+        android:textSize="30dp" />
 
     <org.angmarch.views.NiceSpinner
         android:id="@+id/album_permission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:arrowTint="@color/light_gray"
-        app:textTint="@color/black"
-        app:dropDownListPaddingBottom="60dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
-        />
+        app:arrowTint="@color/light_gray"
+        app:dropDownListPaddingBottom="60dp"
+        app:textTint="@color/black" />
+
     <org.angmarch.views.NiceSpinner
         android:id="@+id/album_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:arrowTint="@color/light_gray"
-        app:textTint="@color/black"
-        app:dropDownListPaddingBottom="60dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
-        />
+        app:arrowTint="@color/light_gray"
+        app:dropDownListPaddingBottom="60dp"
+        app:textTint="@color/black" />
+
+    <Button
+        android:id="@+id/create_album_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_album_btn"></Button>
 </LinearLayout>

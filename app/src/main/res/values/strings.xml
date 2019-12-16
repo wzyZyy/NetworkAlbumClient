@@ -19,6 +19,9 @@
     <string name="testTime">2019–10–11 12:11:00</string>
     <string name="testLabelName">相册名，测试，测试，测试。。。</string>
     <string name="create_album">新建相册</string>
+    <string name="create_album_name">添加相册名称</string>
+    <string name="create_album_desc">添加相册描述</string>
+    <string name="create_album_btn">完成创建</string>
     <!--图片显示页面-->
     <string name="choose_from_camera">相机拍摄</string>
     <string name="choose_from_DCIM">从相册选取</string>

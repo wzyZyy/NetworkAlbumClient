@@ -71,12 +71,18 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
         initView();
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        getAlbums();
+    }
+
     private void initView() {
         FragmentManager manager = getSupportFragmentManager();
         tb = findViewById(R.id.tb);
         List<Bar> bars = new ArrayList<>();
-        bars.add(new Bar("首页", R.drawable.home_select, R.drawable.home_unselect));
-        bars.add(new Bar("图库", R.drawable.pic_select, R.drawable.pic_unselect));
+        bars.add(new Bar("我的图库", R.drawable.pic_select, R.drawable.pic_unselect));
+        bars.add(new Bar("发现", R.drawable.home_select, R.drawable.home_unselect));
         bars.add(new Bar("个人", R.drawable.person_select, R.drawable.person_unselect));
         tb.setManager(manager).setOnSelectListener(this).setBars(bars);
     }
@@ -95,7 +101,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
             case R.id.createAlbum:
                 Toast.makeText(this, "新建相册", Toast.LENGTH_SHORT).show();
                 // 启动活动AlbumActivity，新建相册
-
+                AlbumActivity.actionStart(IndexActivity.this, u_id);
                 break;
             default:
                 break;
