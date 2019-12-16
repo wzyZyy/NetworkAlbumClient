@@ -23,7 +23,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.AlbumActivity"></activity>
+        <activity android:name=".activity.ShareImageActivity"></activity>
+        <activity android:name=".activity.AlbumActivity" />
         <activity android:name=".activity.PreviewActivity">
 
             <!-- 调用新浪原生SDK，需要注册的回调activity -->
@@ -48,14 +49,16 @@
             android:name=".activity.ImageActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.IndexActivity">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

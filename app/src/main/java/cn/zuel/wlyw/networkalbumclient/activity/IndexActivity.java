@@ -31,6 +31,7 @@ import cn.zuel.wlyw.networkalbumclient.base.Album;
 import cn.zuel.wlyw.networkalbumclient.base.AlbumAdapter;
 import cn.zuel.wlyw.networkalbumclient.base.Bar;
 import cn.zuel.wlyw.networkalbumclient.base.BottomTabBar;
+import cn.zuel.wlyw.networkalbumclient.base.ShareAlbumAdapter;
 import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
 import cz.msebera.android.httpclient.Header;
 
@@ -133,7 +134,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     }
 
     /**
-     * 使用RecycleView
+     * 用户自己相册使用RecycleView
      */
     private void setRecycleView() {
         // 获取RecycleView的实例
@@ -147,6 +148,9 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
         recyclerView.setAdapter(albumAdapter);
     }
 
+    /**
+     * 浏览其他人共享的网络相册
+     */
     private void setRecycleView2() {
         // 获取RecycleView的实例
         RecyclerView recyclerView = findViewById(R.id.recycle_view_album2);
@@ -154,9 +158,9 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
         LinearLayoutManager layoutManager = new LinearLayoutManager(IndexActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         // 创建适配器的实例（并传入数据）
-        AlbumAdapter albumAdapter = new AlbumAdapter(albumList2, IndexActivity.this);
+        ShareAlbumAdapter shareAlbumAdapter = new ShareAlbumAdapter(albumList2, IndexActivity.this);
         // 设置适配器
-        recyclerView.setAdapter(albumAdapter);
+        recyclerView.setAdapter(shareAlbumAdapter);
     }
     /**
      * 获取用户所有相册
@@ -245,6 +249,15 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     public void viewImageByAlbum(int a_id) {
         // 启动活动ImageActivity
         ImageActivity.actionStart(IndexActivity.this, a_id);
+    }
+
+    /**
+     *
+     * @param a_id
+     */
+    public void viewShareImageByAlbum(int a_id) {
+        // 启动活动ShareImageActivity
+        ShareImageActivity.actionStart(IndexActivity.this, a_id);
     }
 
     /**
