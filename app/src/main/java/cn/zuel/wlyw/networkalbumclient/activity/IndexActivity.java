@@ -32,7 +32,7 @@ import cn.zuel.wlyw.networkalbumclient.base.BottomTabBar;
 import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
 import cz.msebera.android.httpclient.Header;
 
-public class IndexActivity extends FragmentActivity implements BottomTabBar.OnSelectListener {
+public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelectListener {
 
     private static final String TAG = "IndexActivity";
     private BottomTabBar tb;
