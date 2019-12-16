@@ -76,16 +76,4 @@ public class Album {
         this.a_updatetime = a_updatetime;
     }
 
-    @Override
-    public String toString() {
-        return "Album{" +
-                "a_id=" + a_id +
-                "a_u_id=" + a_u_id +
-                "a_t_id=" + a_t_id +
-                ", a_desc='" + a_desc + '\'' +
-                "a_auth=" + a_auth +
-                ", a_addtime=" + a_addtime +
-                ", a_updatetime=" + a_updatetime +
-                '}';
-    }
 }

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -27,14 +28,19 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import cn.zuel.wlyw.networkalbumclient.R;
+import cn.zuel.wlyw.networkalbumclient.base.User;
 import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends BaseActivity {
+    private User user = new User();
+    //    private List<User> userList = new ArrayList<>();
+    private static final String TAG = "LoginActivity";
     private static final String PACKAGE_URL_SCHEME = "package:";
     // 权限请求码
     private static final int PERMISSIONS_REQUEST = 108;
     private static final int OPEN_SETTING_REQUEST_COED = 110;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +77,7 @@ public class LoginActivity extends BaseActivity {
         // 请求存储和相机权限
         requestMultiplePermissions();
     }
+
     /**
      * 请求存储和相机权限
      */
@@ -119,6 +126,7 @@ public class LoginActivity extends BaseActivity {
             }
         }
     }
+
     /**
      * 显示权限被拒提示，只能进入设置手动改
      */
@@ -150,6 +158,7 @@ public class LoginActivity extends BaseActivity {
         intent.setData(Uri.parse(PACKAGE_URL_SCHEME + getPackageName()));
         startActivityForResult(intent, OPEN_SETTING_REQUEST_COED);
     }
+
     /**
      * 显示权限缺失提示，可再次请求动态权限
      */
@@ -175,13 +184,14 @@ public class LoginActivity extends BaseActivity {
                 .setCancelable(false)
                 .show();
     }
+
     /**
      * 用户登录
      *
-     * @param userAccount 用户手机号
+     * @param userAccount  用户手机号
      * @param userPassword 用户密码
      */
-    public void login(String userAccount, String userPassword) {
+    public void login(final String userAccount, String userPassword) {
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
 
         RequestParams requestParams = new RequestParams();
@@ -199,21 +209,23 @@ public class LoginActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 Log.d("onSuccess:", responseString);
 
-                // 获取返回的状态码
+                String data = "";
                 String resultCode = "";
+                String resultDesc = "";
                 try {
                     JSONObject jsonObject = new JSONObject(responseString);
+                    data = jsonObject.getString("data");
                     resultCode = jsonObject.getString("resultCode");
+                    resultDesc = jsonObject.getString("resultDesc");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                Toast.makeText(LoginActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
                 if (resultCode.equals("4000")) {
-                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                    // 启动活动 IndexActivity
-                    IndexActivity.actionStart(LoginActivity.this);
-                } else {
-                    Toast.makeText(LoginActivity.this, "登录失败，账号或密码错误", Toast.LENGTH_SHORT).show();
+                    user = JSON.parseObject(data, User.class);
+                    Log.d(TAG, "onSuccess: 用户信息-------》" + user);
+                    // 启动活动 IndexActivity,并传入u_id
+                    IndexActivity.actionStart(LoginActivity.this, user.getU_id());
                 }
             }
         });

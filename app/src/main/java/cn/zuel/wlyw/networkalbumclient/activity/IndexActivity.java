@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -35,6 +37,8 @@ import cz.msebera.android.httpclient.Header;
 public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelectListener {
 
     private static final String TAG = "IndexActivity";
+    // 用户id
+    private int u_id;
     private BottomTabBar tb;
     // 底部的三个碎片
     private HomeFragment homeFragment;
@@ -48,8 +52,9 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
      *
      * @param context
      */
-    public static void actionStart(Context context) {
+    public static void actionStart(Context context, int u_id) {
         Intent intent = new Intent(context, IndexActivity.class);
+        intent.putExtra("u_id", u_id);
         context.startActivity(intent);
     }
 
@@ -57,6 +62,10 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
+
+        Intent intent = getIntent();
+        u_id = intent.getIntExtra("u_id", 0);
+
         initView();
     }
 
@@ -71,6 +80,28 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 添加新建相册的菜单项
+        getMenuInflater().inflate(R.menu.create_album, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // 响应菜单项的选择结果
+        switch (item.getItemId()) {
+            case R.id.createAlbum:
+                Toast.makeText(this, "新建相册", Toast.LENGTH_SHORT).show();
+                // 启动活动AlbumActivity，新建相册
+
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onSelect(int position) {
         switch (position) {
             case 0:
@@ -78,8 +109,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
                     homeFragment = new HomeFragment();
                 }
                 tb.switchContent(homeFragment);
-
-                // 获取所有相册
+                // 获取属于该用户的所有相册
                 getAlbums();
                 break;
             case 1:
@@ -87,6 +117,8 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
                     picFragment = new PicFragment();
                 }
                 tb.switchContent(picFragment);
+                // 获取其它用户共享的相册
+
                 break;
             case 2:
                 if (personFragment == null) {
@@ -115,11 +147,53 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     }
 
     /**
-     * 获取所有相册
+     * 获取用户所有相册
      */
     private void getAlbums() {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(MainConfig.ALBUM_GET_URL, new TextHttpResponseHandler() {
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("u_id", u_id);
+        client.post(MainConfig.ALBUM_GET_URL, requestParams, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(IndexActivity.this, "网络错误，获取相册失败", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "点击底部tab,获取相册失败");
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                Log.d(TAG, "成功获取相册，服务器响应结果：" + responseString);
+                String data = "";
+                String resultCode = "";
+                String resultDesc = "";
+                try {
+                    JSONObject jsonObject = new JSONObject(responseString);
+                    data = jsonObject.getString("data");
+                    resultCode = jsonObject.getString("resultCode");
+                    resultDesc = jsonObject.getString("resultDesc");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(IndexActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
+                if (resultCode.equals("6023")) {
+                    // 获取相册成功
+                    albumList = JSON.parseArray(data, Album.class);
+                    setRecycleView();
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取其它用户共享的所有相册
+     */
+    private void getShareAlbums() {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("u_id", u_id);
+        client.post(MainConfig.ALBUM_GET_SHARE_URL, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，获取相册失败", Toast.LENGTH_SHORT).show();
