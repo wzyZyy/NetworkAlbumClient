@@ -139,9 +139,10 @@ public class PreviewActivity extends BaseActivity {
         // titleUrl QQ和QQ空间跳转链接
         oks.setTitleUrl("http://sharesdk.cn");
         // text是分享文本，所有平台都需要这个字段
-        oks.setText("我是分享文本");
+        oks.setText("分享来自网络相册的图片");
         // imagePath是图片的本地路径，确保SDcard下面存在此张图片
-        oks.setImagePath("/sdcard/test.jpg");
+//        oks.setImagePath("/sdcard/test.jpg");
+        oks.setImagePath(MainConfig.REQUEST_URL + i_path);
         // url在微信、Facebook等平台中使用
         oks.setUrl("http://sharesdk.cn");
         // 启动分享GUI
