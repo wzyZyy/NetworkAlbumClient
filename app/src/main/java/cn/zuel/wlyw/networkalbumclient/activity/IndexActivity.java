@@ -46,6 +46,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     private PersonFragment personFragment;
     // 用于保存相册信息
     private List<Album> albumList = new ArrayList<>();
+    private List<Album> albumList2 = new ArrayList<>();
 
     /**
      * 启动该活动的接口
@@ -118,7 +119,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
                 }
                 tb.switchContent(picFragment);
                 // 获取其它用户共享的相册
-
+                getShareAlbums();
                 break;
             case 2:
                 if (personFragment == null) {
@@ -146,6 +147,17 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
         recyclerView.setAdapter(albumAdapter);
     }
 
+    private void setRecycleView2() {
+        // 获取RecycleView的实例
+        RecyclerView recyclerView = findViewById(R.id.recycle_view_album2);
+        // 指定Recycle的布局方式
+        LinearLayoutManager layoutManager = new LinearLayoutManager(IndexActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        // 创建适配器的实例（并传入数据）
+        AlbumAdapter albumAdapter = new AlbumAdapter(albumList2, IndexActivity.this);
+        // 设置适配器
+        recyclerView.setAdapter(albumAdapter);
+    }
     /**
      * 获取用户所有相册
      */
@@ -193,7 +205,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
 
         RequestParams requestParams = new RequestParams();
         requestParams.put("u_id", u_id);
-        client.post(MainConfig.ALBUM_GET_SHARE_URL, new TextHttpResponseHandler() {
+        client.post(MainConfig.ALBUM_GET_SHARE_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，获取相册失败", Toast.LENGTH_SHORT).show();
@@ -217,8 +229,8 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
                 Toast.makeText(IndexActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
                 if (resultCode.equals("6023")) {
                     // 获取相册成功
-                    albumList = JSON.parseArray(data, Album.class);
-                    setRecycleView();
+                    albumList2 = JSON.parseArray(data, Album.class);
+                    setRecycleView2();
                 }
             }
         });
