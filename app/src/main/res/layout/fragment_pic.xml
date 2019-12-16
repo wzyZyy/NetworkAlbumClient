@@ -4,12 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:orientation="vertical">
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:text="图库"-->
-<!--        android:gravity="center"-->
-<!--        android:textSize="30dp"-->
-<!--        android:layout_height="match_parent" />-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view_album2"
         android:layout_width="match_parent"

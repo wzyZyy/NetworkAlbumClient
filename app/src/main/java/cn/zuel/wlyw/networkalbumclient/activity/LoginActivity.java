@@ -225,7 +225,7 @@ public class LoginActivity extends BaseActivity {
                     user = JSON.parseObject(data, User.class);
                     Log.d(TAG, "onSuccess: 用户信息-------》" + user);
                     // 启动活动 IndexActivity,并传入u_id
-                    IndexActivity.actionStart(LoginActivity.this, user.getU_id());
+                    IndexActivity.actionStart(LoginActivity.this, user.getU_id(), user.getU_nickname(), user.getU_phone(), user.getU_gender(), user.getU_qq());
                 }
             }
         });
