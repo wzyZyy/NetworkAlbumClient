@@ -24,7 +24,7 @@ import cz.msebera.android.httpclient.Header;
 public class RegisterActivity extends BaseActivity {
 
     public static void actionStart(Context context) {
-        Intent intent = new Intent(context, IndexActivity.class);
+        Intent intent = new Intent(context, RegisterActivity.class);
         context.startActivity(intent);
     }
     @Override
@@ -39,7 +39,7 @@ public class RegisterActivity extends BaseActivity {
         // 注册按钮
         Button registerBtn = (Button) findViewById(R.id.register_btn);
 
-        // 为登录按钮设置监听事件
+        // 为注册按钮设置监听事件
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

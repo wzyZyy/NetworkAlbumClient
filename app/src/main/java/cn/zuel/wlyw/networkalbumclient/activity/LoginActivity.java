@@ -68,8 +68,10 @@ public class LoginActivity extends BaseActivity {
         login_link_to_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: 点击去注册跳转链接" + 1);
                 Toast.makeText(LoginActivity.this, "去注册", Toast.LENGTH_SHORT).show();
                 // 启动活动 RegisterActivity
+                Log.d(TAG, "onClick: 点击去注册跳转链接" + 2);
                 RegisterActivity.actionStart(LoginActivity.this);
             }
         });
