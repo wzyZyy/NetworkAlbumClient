@@ -2,8 +2,8 @@ package cn.zuel.wlyw.networkalbumclient.config;
 
 public class MainConfig {
     // 服务器IP地址
-//    private final static String SERVER_IP = "10.174.244.60";
-    private final static String SERVER_IP = "10.169.98.58";
+    private final static String SERVER_IP = "10.174.244.60";
+//    private final static String SERVER_IP = "10.169.98.58";
     // 拼接形成请求地址
     public final static String REQUEST_URL = "http://" + SERVER_IP + ":8080/";
 
@@ -15,6 +15,7 @@ public class MainConfig {
     public final static String ALBUM_GET_SHARE_URL = REQUEST_URL + "album/getShareAlbums";
     public final static String ALBUM_DELETE_URL = REQUEST_URL + "album/deleteAlbum";
     public final static String GET_IMAGES_URL = REQUEST_URL + "image/getImages";
+    public final static String DELETE_IMAGES_URL = REQUEST_URL + "image/deleteImage";
     public final static String UPLOAD_IMAGE_URL = REQUEST_URL + "image/uploadImage";
     public final static String GET_USER_URL = REQUEST_URL + "user/getInfo";
     public final static String MODIFY_USER_INFO_URL = REQUEST_URL + "user/modifyInfo";

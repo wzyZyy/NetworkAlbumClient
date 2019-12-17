@@ -74,7 +74,7 @@ public class ImageActivity extends BaseActivity {
         Intent intent = getIntent();
         a_id = intent.getIntExtra("a_id", 0);
         // 获取图片
-        getImages(a_id);
+        getImages();
     }
 
     /**
@@ -208,7 +208,7 @@ public class ImageActivity extends BaseActivity {
                 File file = new File(path);
                 try {
                     // 上传图片到指定相册
-                    ImageActivity.this.uploadImage(a_id, file);
+                    ImageActivity.this.uploadImage(file);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -222,16 +222,62 @@ public class ImageActivity extends BaseActivity {
         });
         builder.show();
     }
+
+    /**
+     * 预览图片，启动另一个活动
+     *
+     * @param i_path 图片的路径
+     */
     public void previewImage(String i_path) {
         // 启动活动PreviewActivity
-       PreviewActivity.actionStart(ImageActivity.this, i_path);
+        PreviewActivity.actionStart(ImageActivity.this, i_path);
     }
+
+    /**
+     * 删除图片
+     *
+     * @param i_id
+     */
+    public void deleteImage(int i_id) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        RequestParams params = new RequestParams();
+        params.put("i_id", i_id);
+
+        client.post(MainConfig.DELETE_IMAGES_URL, params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(ImageActivity.this, "网络错误，删除图片失败", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "删除图片失败");
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                Log.d(TAG, "删除相册中的图片，服务器的响应结果: " + responseString);
+
+                String resultCode = "";
+                String resultDesc = "";
+                try {
+                    JSONObject jsonObject = new JSONObject(responseString);
+                    resultCode = jsonObject.getString("resultCode");
+                    resultDesc = jsonObject.getString("resultDesc");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(ImageActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
+                if (resultCode.equals("6004")) {
+                    Log.d(TAG, "onSuccess: " + "删除图片成功");
+                    getImages();
+                    setRecycleView();
+                }
+            }
+        });
+    }
+
     /**
      * 查看相册中的照片
-     *
-     * @param a_id 相册id
      */
-    public void getImages(int a_id) {
+    public void getImages() {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("a_id", a_id);
@@ -270,11 +316,10 @@ public class ImageActivity extends BaseActivity {
     /**
      * 上传图片文件到指定相册
      *
-     * @param a_id      相册id
      * @param imageFile 上传的图片文件
      * @throws FileNotFoundException
      */
-    public void uploadImage(final int a_id, File imageFile) throws FileNotFoundException {
+    public void uploadImage(File imageFile) throws FileNotFoundException {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("a_id", a_id);
@@ -303,7 +348,7 @@ public class ImageActivity extends BaseActivity {
                     Toast.makeText(ImageActivity.this, "上传图片成功", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "上传图片成功");
                     // 刷新
-                    getImages(a_id);
+                    getImages();
                     setRecycleView();
                 }
             }

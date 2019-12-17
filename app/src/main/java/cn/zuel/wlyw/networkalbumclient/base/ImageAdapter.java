@@ -68,7 +68,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 int position = holder.getAdapterPosition();
                 Image image = imageList.get(position);
                 Toast.makeText(v.getContext(), "delete " + image.getI_id(), Toast.LENGTH_SHORT).show();
-//            imageActivity.deleteImage(image.getI_id());
+                imageActivity.deleteImage(image.getI_id());
             }
         });
         return holder;
