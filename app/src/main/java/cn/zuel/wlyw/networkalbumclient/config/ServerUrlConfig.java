@@ -1,6 +1,6 @@
 package cn.zuel.wlyw.networkalbumclient.config;
 
-public class MainConfig {
+public class ServerUrlConfig {
     // 服务器IP地址
     private final static String SERVER_IP = "10.174.244.60";
 //    private final static String SERVER_IP = "10.169.98.58";

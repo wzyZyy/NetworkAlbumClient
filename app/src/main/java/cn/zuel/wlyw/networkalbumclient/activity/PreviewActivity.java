@@ -20,7 +20,7 @@ import java.io.FileOutputStream;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.zuel.wlyw.networkalbumclient.R;
-import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
+import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
 
 public class PreviewActivity extends BaseActivity {
 
@@ -124,7 +124,7 @@ public class PreviewActivity extends BaseActivity {
      */
     public void previewImage() {
         Glide.with(this)
-                .load(MainConfig.REQUEST_URL + i_path)
+                .load(ServerUrlConfig.REQUEST_URL + i_path)
                 .placeholder(R.drawable.loading)
                 .into(imageView);
     }
@@ -142,7 +142,7 @@ public class PreviewActivity extends BaseActivity {
         oks.setText("分享来自网络相册的图片");
         // imagePath是图片的本地路径，确保SDcard下面存在此张图片
 //        oks.setImagePath("/sdcard/test.jpg");
-        oks.setImagePath(MainConfig.REQUEST_URL + i_path);
+        oks.setImagePath(ServerUrlConfig.REQUEST_URL + i_path);
         // url在微信、Facebook等平台中使用
         oks.setUrl("http://sharesdk.cn");
         // 启动分享GUI

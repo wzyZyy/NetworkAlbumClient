@@ -36,7 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import cn.zuel.wlyw.networkalbumclient.R;
 import cn.zuel.wlyw.networkalbumclient.base.Image;
 import cn.zuel.wlyw.networkalbumclient.base.ImageAdapter;
-import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
+import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
 import cn.zuel.wlyw.networkalbumclient.kit.ImageKit;
 import cz.msebera.android.httpclient.Header;
 
@@ -244,7 +244,7 @@ public class ImageActivity extends BaseActivity {
         RequestParams params = new RequestParams();
         params.put("i_id", i_id);
 
-        client.post(MainConfig.DELETE_IMAGES_URL, params, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.DELETE_IMAGES_URL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(ImageActivity.this, "网络错误，删除图片失败", Toast.LENGTH_SHORT).show();
@@ -281,7 +281,7 @@ public class ImageActivity extends BaseActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("a_id", a_id);
-        client.post(MainConfig.GET_IMAGES_URL, params, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.GET_IMAGES_URL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(ImageActivity.this, "网络错误，获取图片失败", Toast.LENGTH_SHORT).show();
@@ -324,7 +324,7 @@ public class ImageActivity extends BaseActivity {
         RequestParams params = new RequestParams();
         params.put("a_id", a_id);
         params.put("file", imageFile, "Content-Type");
-        client.post(MainConfig.UPLOAD_IMAGE_URL, params, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.UPLOAD_IMAGE_URL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(ImageActivity.this, "网络错误，上传图片失败", Toast.LENGTH_SHORT).show();

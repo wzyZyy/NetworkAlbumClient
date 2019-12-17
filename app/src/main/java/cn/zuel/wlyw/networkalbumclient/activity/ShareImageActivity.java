@@ -1,22 +1,12 @@
 package cn.zuel.wlyw.networkalbumclient.activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.bytedance.sdk.account.open.aweme.share.Share;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -24,22 +14,15 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.zuel.wlyw.networkalbumclient.R;
 import cn.zuel.wlyw.networkalbumclient.base.Image;
-import cn.zuel.wlyw.networkalbumclient.base.ImageAdapter;
 import cn.zuel.wlyw.networkalbumclient.base.ShareImageAdapter;
-import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
-import cn.zuel.wlyw.networkalbumclient.kit.ImageKit;
+import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class ShareImageActivity extends BaseActivity {
@@ -96,7 +79,7 @@ public class ShareImageActivity extends BaseActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("a_id", a_id);
-        client.post(MainConfig.GET_IMAGES_URL, params, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.GET_IMAGES_URL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(ShareImageActivity.this, "网络错误，获取图片失败", Toast.LENGTH_SHORT).show();

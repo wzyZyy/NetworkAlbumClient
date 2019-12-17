@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.zuel.wlyw.networkalbumclient.R;
-import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
+import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class AlbumActivity extends BaseActivity {
@@ -151,7 +151,7 @@ public class AlbumActivity extends BaseActivity {
         requestParams.put("a_desc", a_desc);
 
         Log.d(TAG, "createAlbum: a_t_id" + a_t_id);
-        client.post(MainConfig.ALBUM_CREATE_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.ALBUM_CREATE_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(AlbumActivity.this, "网络错误，新建相册失败", Toast.LENGTH_SHORT).show();

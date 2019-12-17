@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +34,7 @@ import cn.zuel.wlyw.networkalbumclient.base.Bar;
 import cn.zuel.wlyw.networkalbumclient.base.BottomTabBar;
 import cn.zuel.wlyw.networkalbumclient.base.ShareAlbumAdapter;
 import cn.zuel.wlyw.networkalbumclient.base.User;
-import cn.zuel.wlyw.networkalbumclient.config.MainConfig;
+import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelectListener {
@@ -234,7 +232,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
         RequestParams requestParams = new RequestParams();
         requestParams.put("u_id", u_id);
 
-        client.post(MainConfig.GET_USER_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.GET_USER_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，获取用户信息失败", Toast.LENGTH_SHORT).show();
@@ -277,7 +275,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
         requestParams.put("u_gender", u_gender);
         requestParams.put("u_qq", u_qq);
 
-        client.post(MainConfig.MODIFY_USER_INFO_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.MODIFY_USER_INFO_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，修改用户信息失败", Toast.LENGTH_SHORT).show();
@@ -312,7 +310,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
 
         RequestParams requestParams = new RequestParams();
         requestParams.put("u_id", u_id);
-        client.post(MainConfig.ALBUM_GET_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.ALBUM_GET_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，获取相册失败", Toast.LENGTH_SHORT).show();
@@ -351,7 +349,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
 
         RequestParams requestParams = new RequestParams();
         requestParams.put("u_id", u_id);
-        client.post(MainConfig.ALBUM_GET_SHARE_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.ALBUM_GET_SHARE_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，获取相册失败", Toast.LENGTH_SHORT).show();
@@ -410,7 +408,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams requestParams = new RequestParams();
         requestParams.put("a_id", a_id);
-        client.post(MainConfig.ALBUM_DELETE_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerUrlConfig.ALBUM_DELETE_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，删除相册失败", Toast.LENGTH_SHORT).show();
