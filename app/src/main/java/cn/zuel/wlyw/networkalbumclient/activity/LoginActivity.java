@@ -2,6 +2,7 @@ package cn.zuel.wlyw.networkalbumclient.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -34,13 +36,16 @@ import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends BaseActivity {
     private User user;
-    //    private List<User> userList = new ArrayList<>();
     private static final String TAG = "LoginActivity";
     private static final String PACKAGE_URL_SCHEME = "package:";
     // 权限请求码
     private static final int PERMISSIONS_REQUEST = 108;
     private static final int OPEN_SETTING_REQUEST_COED = 110;
 
+    public static void actionStart(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +58,7 @@ public class LoginActivity extends BaseActivity {
         // 登录按钮
         Button loginBtn = findViewById(R.id.login_btn);
         // 去注册跳转链接
-        EditText login_link_to_register = findViewById(R.id.login_link_to_register);
+        TextView login_link_to_register = findViewById(R.id.login_link_to_register);
 
         // 为登录按钮设置监听事件
         loginBtn.setOnClickListener(new View.OnClickListener() {

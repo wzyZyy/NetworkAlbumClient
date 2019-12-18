@@ -67,8 +67,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.d("onFailure", responseString);
-//                Toast.makeText(RegisterActivity.this, "连接服务器出错", Toast.LENGTH_SHORT).show();
-//                Toast.makeText()
+                Toast.makeText(RegisterActivity.this, "网络错误，连接服务器出错", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -77,17 +76,18 @@ public class RegisterActivity extends BaseActivity {
 
                 // 获取返回的状态码
                 String resultCode = "";
+                String resultDesc = "";
                 try {
                     JSONObject jsonObject = new JSONObject(responseString);
                     resultCode = jsonObject.getString("resultCode");
+                    resultDesc = jsonObject.getString("resultDesc");
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                if (resultCode.equals("5001")) {
-                    Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(RegisterActivity.this, "注册失败，有错误", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
+                if (resultCode.equals("5001")) {// 注册成功
+                    LoginActivity.actionStart(RegisterActivity.this);
                 }
             }
         });
