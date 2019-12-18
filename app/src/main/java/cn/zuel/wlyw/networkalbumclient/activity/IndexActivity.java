@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -51,7 +49,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     private PersonFragment personFragment;
     // 用于保存相册信息
     private List<Album> albumList = new ArrayList<>();
-    private List<Album> albumList2 = new ArrayList<>();
+    private List<Album> sharedAlbumList = new ArrayList<>();
 
     private boolean refreshFlag = false;
 
@@ -59,7 +57,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     /**
      * 启动该活动的接口
      *
-     * @param context
+     * @param context 活动启动方
      */
     public static void actionStart(Context context, int u_id) {
         Intent intent = new Intent(context, IndexActivity.class);
@@ -75,9 +73,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
 
         Intent intent = getIntent();
         u_id = intent.getIntExtra("u_id", 0);
-//        Log.d(TAG, "onCreate: 获取用户的个人信息前-------------------------》" + user.toString());
         getUserInfo();
-//        Log.d(TAG, "onCreate: 获取用户的个人信息后-------------------------》" + user.toString());
         initView();
     }
 
@@ -141,7 +137,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
                 }
                 tb.switchContent(picFragment);
                 // 获取其它用户共享的相册
-                getShareAlbums();
+                getSharedAlbums();
                 break;
             case 2:
                 refreshFlag = false;
@@ -173,14 +169,14 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     /**
      * 浏览其他人共享的网络相册
      */
-    private void setRecycleView2() {
+    private void setSharedRecycleView() {
         // 获取RecycleView的实例
-        RecyclerView recyclerView = findViewById(R.id.recycle_view_album2);
+        RecyclerView recyclerView = findViewById(R.id.recycle_view_share_album);
         // 指定Recycle的布局方式
         LinearLayoutManager layoutManager = new LinearLayoutManager(IndexActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         // 创建适配器的实例（并传入数据）
-        ShareAlbumAdapter shareAlbumAdapter = new ShareAlbumAdapter(albumList2, IndexActivity.this);
+        ShareAlbumAdapter shareAlbumAdapter = new ShareAlbumAdapter(sharedAlbumList, IndexActivity.this);
         // 设置适配器
         recyclerView.setAdapter(shareAlbumAdapter);
     }
@@ -266,7 +262,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     /**
      * 获取其它用户共享的所有相册
      */
-    private void getShareAlbums() {
+    private void getSharedAlbums() {
         AsyncHttpClient client = new AsyncHttpClient();
 
         RequestParams requestParams = new RequestParams();
@@ -275,12 +271,12 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，获取相册失败", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "点击底部tab,获取相册失败");
+                Log.d(TAG, "点击底部tab,获取共享相册失败");
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Log.d(TAG, "成功获取相册，服务器响应结果：" + responseString);
+                Log.d(TAG, "成功获取共享相册，服务器响应结果：" + responseString);
                 String data = "";
                 String resultCode = "";
                 String resultDesc = "";
@@ -295,8 +291,8 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
                 Toast.makeText(IndexActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
                 if (resultCode.equals("6023")) {
                     // 获取相册成功
-                    albumList2 = JSON.parseArray(data, Album.class);
-                    setRecycleView2();
+                    sharedAlbumList = JSON.parseArray(data, Album.class);
+                    setSharedRecycleView();
                 }
             }
         });
@@ -314,7 +310,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     }
 
     /**
-     * @param a_id
+     * @param a_id 相册id
      */
     public void viewShareImageByAlbum(int a_id) {
         // 启动活动ShareImageActivity
