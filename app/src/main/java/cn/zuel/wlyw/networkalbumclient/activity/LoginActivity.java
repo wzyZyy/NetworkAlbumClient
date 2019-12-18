@@ -33,7 +33,7 @@ import cn.zuel.wlyw.networkalbumclient.config.ServerConstantConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends BaseActivity {
-    private User user = new User();
+    private User user;
     //    private List<User> userList = new ArrayList<>();
     private static final String TAG = "LoginActivity";
     private static final String PACKAGE_URL_SCHEME = "package:";
@@ -227,7 +227,7 @@ public class LoginActivity extends BaseActivity {
                     user = JSON.parseObject(data, User.class);
                     Log.d(TAG, "onSuccess: 用户信息-------》" + user);
                     // 启动活动 IndexActivity,并传入u_id
-                    IndexActivity.actionStart(LoginActivity.this, user.getU_id(), user.getU_nickname(), user.getU_phone(), user.getU_gender(), user.getU_qq());
+                    IndexActivity.actionStart(LoginActivity.this, user.getU_id());
                 }
             }
         });

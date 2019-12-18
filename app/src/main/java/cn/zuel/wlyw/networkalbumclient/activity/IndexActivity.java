@@ -61,7 +61,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
      *
      * @param context
      */
-    public static void actionStart(Context context, int u_id, String u_nickname, String u_phone, String u_gender, String u_qq) {
+    public static void actionStart(Context context, int u_id) {
         Intent intent = new Intent(context, IndexActivity.class);
         intent.putExtra("u_id", u_id);
 
@@ -75,7 +75,9 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
 
         Intent intent = getIntent();
         u_id = intent.getIntExtra("u_id", 0);
+//        Log.d(TAG, "onCreate: 获取用户的个人信息前-------------------------》" + user.toString());
         getUserInfo();
+//        Log.d(TAG, "onCreate: 获取用户的个人信息后-------------------------》" + user.toString());
         initView();
     }
 
@@ -144,11 +146,9 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
             case 2:
                 refreshFlag = false;
                 if (personFragment == null) {
-                    personFragment = new PersonFragment();
+                    personFragment = new PersonFragment(user);
                 }
                 tb.switchContent(personFragment);
-                // 获取用户的个人信息
-                personFragment.refresh(user.getU_nickname(), user.getU_phone(), user.getU_gender(), user.getU_qq());
                 break;
             default:
                 break;
@@ -395,7 +395,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
                 if (resultCode.equals("7002")) {
                     // 修改用户信息成功
                     getUserInfo();
-                    personFragment.refresh(user.getU_nickname(), user.getU_phone(), user.getU_gender(), user.getU_qq());
+                    personFragment.setUser(user);
                 }
             }
         });

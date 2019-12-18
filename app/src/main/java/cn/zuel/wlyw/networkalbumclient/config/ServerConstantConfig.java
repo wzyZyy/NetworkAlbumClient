@@ -2,8 +2,8 @@ package cn.zuel.wlyw.networkalbumclient.config;
 
 public class ServerConstantConfig {
     // 服务器IP地址
-    private final static String SERVER_IP = "10.174.244.60";
-//    private final static String SERVER_IP = "10.169.98.58";
+//    private final static String SERVER_IP = "10.174.244.60";
+    private final static String SERVER_IP = "192.168.1.246";
     // 拼接形成请求地址
     public final static String REQUEST_URL = "http://" + SERVER_IP + ":8080/";
 
