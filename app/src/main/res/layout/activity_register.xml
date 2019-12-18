@@ -2,36 +2,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:gravity="center_vertical"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/ui_register_label_account" />
+        android:layout_marginLeft="15dp"
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/register_input_user_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/ui_register_input_account_tip"
-        android:inputType="phone" />
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ui_register_label_account" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/ui_register_label_password" />
+        <EditText
+            android:id="@+id/register_input_user_account"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/ui_register_input_account_tip"
+            android:inputType="phone" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/register_input_user_password"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/ui_register_input_password_tip"
-        android:inputType="textPassword" />
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ui_register_label_password" />
+
+        <EditText
+            android:id="@+id/register_input_user_password"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/ui_register_input_password_tip"
+            android:inputType="textPassword" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/register_btn"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="200dp"
+        android:textSize="22dp"
         android:text="@string/ui_register_btn" />
 
 </LinearLayout>
