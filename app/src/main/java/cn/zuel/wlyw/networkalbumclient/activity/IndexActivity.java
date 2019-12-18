@@ -34,7 +34,7 @@ import cn.zuel.wlyw.networkalbumclient.base.Bar;
 import cn.zuel.wlyw.networkalbumclient.base.BottomTabBar;
 import cn.zuel.wlyw.networkalbumclient.base.ShareAlbumAdapter;
 import cn.zuel.wlyw.networkalbumclient.base.User;
-import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
+import cn.zuel.wlyw.networkalbumclient.config.ServerConstantConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelectListener {
@@ -42,10 +42,8 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     private static final String TAG = "IndexActivity";
     // 用户id
     private int u_id;
-    private String u_nickname;
-    private String u_phone;
-    private String u_gender;
-    private String u_qq;
+    private User user;
+
     private BottomTabBar tb;
     // 底部的三个碎片
     private HomeFragment homeFragment;
@@ -57,7 +55,6 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
 
     private boolean refreshFlag = false;
 
-    private User user;
 
     /**
      * 启动该活动的接口
@@ -67,10 +64,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     public static void actionStart(Context context, int u_id, String u_nickname, String u_phone, String u_gender, String u_qq) {
         Intent intent = new Intent(context, IndexActivity.class);
         intent.putExtra("u_id", u_id);
-        intent.putExtra("u_nickname", u_nickname);
-        intent.putExtra("u_phone", u_phone);
-        intent.putExtra("u_gender", u_gender);
-        intent.putExtra("u_qq", u_qq);
+
         context.startActivity(intent);
     }
 
@@ -81,12 +75,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
 
         Intent intent = getIntent();
         u_id = intent.getIntExtra("u_id", 0);
-        u_nickname = intent.getStringExtra("u_nickname");
-        u_phone = intent.getStringExtra("u_phone");
-        u_gender = intent.getStringExtra("u_gender");
-        u_gender = intent.getStringExtra("u_gender");
-        u_qq = intent.getStringExtra("u_qq");
-
+        getUserInfo();
         initView();
     }
 
@@ -158,35 +147,8 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
                     personFragment = new PersonFragment();
                 }
                 tb.switchContent(personFragment);
-
-//                View v = personFragment.getView();
-                Log.d(TAG, "onSelect: 1");
-                final EditText userNickname = findViewById(R.id.display_user_nickname);
-                final EditText userPhone = findViewById(R.id.display_user_phone);
-                final EditText userGender = findViewById(R.id.display_user_gender);
-                final EditText userQq = findViewById(R.id.display_user_qq);
-                Button modifyUserInfoBtn = findViewById(R.id.modify_user_info_btn);
-                Log.d(TAG, "onSelect: 2");
-//                modifyUserInfoBtn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        modifyUserInfo(userNickname.getText().toString(), userPhone.getText().toString(), userGender.getText().toString(), userQq.getText().toString());
-//                        // 刷新
-//                        getUserInfo();
-//                        userNickname.setText(user.getU_nickname());
-//                        userPhone.setText(user.getU_phone());
-//                        userGender.setText(user.getU_gender());
-//                        userQq.setText(user.getU_qq());
-//                    }
-//                });
-                Log.d(TAG, "onSelect: 3");
                 // 获取用户的个人信息
-//                getUserInfo();
-//                userNickname.setText(u_nickname);
-//                userPhone.setText(u_phone);
-//                userGender.setText(u_gender);
-//                userQq.setText(u_qq);
-                Log.d(TAG, "onSelect: 4");
+                personFragment.refresh(user.getU_nickname(), user.getU_phone(), user.getU_gender(), user.getU_qq());
                 break;
             default:
                 break;
@@ -232,7 +194,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
         RequestParams requestParams = new RequestParams();
         requestParams.put("u_id", u_id);
 
-        client.post(ServerUrlConfig.GET_USER_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerConstantConfig.GET_USER_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，获取用户信息失败", Toast.LENGTH_SHORT).show();
@@ -263,46 +225,6 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
     }
 
     /**
-     * 修改用户信息
-     */
-    private void modifyUserInfo(String u_nickname, String u_phone, String u_gender, String u_qq) {
-        AsyncHttpClient client = new AsyncHttpClient();
-
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("u_id", u_id);
-        requestParams.put("u_nickname", u_nickname);
-        requestParams.put("u_phone", u_phone);
-        requestParams.put("u_gender", u_gender);
-        requestParams.put("u_qq", u_qq);
-
-        client.post(ServerUrlConfig.MODIFY_USER_INFO_URL, requestParams, new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(IndexActivity.this, "网络错误，修改用户信息失败", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "修改用户信息失败");
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Log.d(TAG, "成功修改用户信息，服务器响应结果：" + responseString);
-                String resultCode = "";
-                String resultDesc = "";
-                try {
-                    JSONObject jsonObject = new JSONObject(responseString);
-                    resultCode = jsonObject.getString("resultCode");
-                    resultDesc = jsonObject.getString("resultDesc");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Toast.makeText(IndexActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
-                if (resultCode.equals("7002")) {
-                    // 修改用户信息成功
-                }
-            }
-        });
-    }
-
-    /**
      * 获取用户所有相册
      */
     private void getAlbums() {
@@ -310,7 +232,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
 
         RequestParams requestParams = new RequestParams();
         requestParams.put("u_id", u_id);
-        client.post(ServerUrlConfig.ALBUM_GET_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerConstantConfig.ALBUM_GET_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，获取相册失败", Toast.LENGTH_SHORT).show();
@@ -349,7 +271,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
 
         RequestParams requestParams = new RequestParams();
         requestParams.put("u_id", u_id);
-        client.post(ServerUrlConfig.ALBUM_GET_SHARE_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerConstantConfig.ALBUM_GET_SHARE_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，获取相册失败", Toast.LENGTH_SHORT).show();
@@ -408,7 +330,7 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams requestParams = new RequestParams();
         requestParams.put("a_id", a_id);
-        client.post(ServerUrlConfig.ALBUM_DELETE_URL, requestParams, new TextHttpResponseHandler() {
+        client.post(ServerConstantConfig.ALBUM_DELETE_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(IndexActivity.this, "网络错误，删除相册失败", Toast.LENGTH_SHORT).show();
@@ -432,6 +354,48 @@ public class IndexActivity extends BaseActivity implements BottomTabBar.OnSelect
                     // 删除相册成功，刷新
                     getAlbums();
                     setRecycleView();
+                }
+            }
+        });
+    }
+
+    /**
+     * 修改用户信息
+     */
+    public void modifyUserInfo(String u_nickname, String u_phone, String u_gender, String u_qq) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("u_id", u_id);
+        requestParams.put("u_nickname", u_nickname);
+        requestParams.put("u_phone", u_phone);
+        requestParams.put("u_gender", u_gender);
+        requestParams.put("u_qq", u_qq);
+
+        client.post(ServerConstantConfig.MODIFY_USER_INFO_URL, requestParams, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(IndexActivity.this, "网络错误，修改用户信息失败", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "修改用户信息失败");
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                Log.d(TAG, "成功修改用户信息，服务器响应结果：" + responseString);
+                String resultCode = "";
+                String resultDesc = "";
+                try {
+                    JSONObject jsonObject = new JSONObject(responseString);
+                    resultCode = jsonObject.getString("resultCode");
+                    resultDesc = jsonObject.getString("resultDesc");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(IndexActivity.this, resultDesc, Toast.LENGTH_SHORT).show();
+                if (resultCode.equals("7002")) {
+                    // 修改用户信息成功
+                    getUserInfo();
+                    personFragment.refresh(user.getU_nickname(), user.getU_phone(), user.getU_gender(), user.getU_qq());
                 }
             }
         });

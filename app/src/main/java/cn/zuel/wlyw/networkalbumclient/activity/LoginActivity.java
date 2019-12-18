@@ -29,7 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import cn.zuel.wlyw.networkalbumclient.R;
 import cn.zuel.wlyw.networkalbumclient.base.User;
-import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
+import cn.zuel.wlyw.networkalbumclient.config.ServerConstantConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends BaseActivity {
@@ -200,7 +200,7 @@ public class LoginActivity extends BaseActivity {
         requestParams.add("u_phone", userAccount);
         requestParams.add("u_pwd", userPassword);
 
-        asyncHttpClient.post(ServerUrlConfig.USER_LOGIN_URL, requestParams, new TextHttpResponseHandler() {
+        asyncHttpClient.post(ServerConstantConfig.USER_LOGIN_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.d("onFailure", responseString);

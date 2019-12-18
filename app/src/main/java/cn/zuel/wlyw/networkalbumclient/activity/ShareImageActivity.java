@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import cn.zuel.wlyw.networkalbumclient.R;
 import cn.zuel.wlyw.networkalbumclient.base.Image;
 import cn.zuel.wlyw.networkalbumclient.base.ShareImageAdapter;
-import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
+import cn.zuel.wlyw.networkalbumclient.config.ServerConstantConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class ShareImageActivity extends BaseActivity {
@@ -79,7 +79,7 @@ public class ShareImageActivity extends BaseActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("a_id", a_id);
-        client.post(ServerUrlConfig.GET_IMAGES_URL, params, new TextHttpResponseHandler() {
+        client.post(ServerConstantConfig.GET_IMAGES_URL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(ShareImageActivity.this, "网络错误，获取图片失败", Toast.LENGTH_SHORT).show();

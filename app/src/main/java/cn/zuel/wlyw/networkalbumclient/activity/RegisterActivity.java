@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 import androidx.annotation.Nullable;
 import cn.zuel.wlyw.networkalbumclient.R;
-import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
+import cn.zuel.wlyw.networkalbumclient.config.ServerConstantConfig;
 import cz.msebera.android.httpclient.Header;
 
 public class RegisterActivity extends BaseActivity {
@@ -63,7 +63,7 @@ public class RegisterActivity extends BaseActivity {
         requestParams.add("u_phone", userAccount);
         requestParams.add("u_pwd", userPassword);
 
-        asyncHttpClient.post(ServerUrlConfig.USER_REGISTER_URL, requestParams, new TextHttpResponseHandler() {
+        asyncHttpClient.post(ServerConstantConfig.USER_REGISTER_URL, requestParams, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.d("onFailure", responseString);

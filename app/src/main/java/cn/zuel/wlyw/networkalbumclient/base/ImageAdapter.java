@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.zuel.wlyw.networkalbumclient.R;
 import cn.zuel.wlyw.networkalbumclient.activity.ImageActivity;
-import cn.zuel.wlyw.networkalbumclient.config.ServerUrlConfig;
+import cn.zuel.wlyw.networkalbumclient.config.ServerConstantConfig;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     private List<Image> imageList;
@@ -78,7 +78,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Image image = imageList.get(position);
         Glide.with(imageActivity)
-                .load(ServerUrlConfig.REQUEST_URL + image.getI_path())
+                .load(ServerConstantConfig.REQUEST_URL + image.getI_path())
                 .placeholder(R.drawable.loading)
                 .into(holder.imageImage);
         holder.imageName.setText(image.getI_name());
