@@ -19,7 +19,7 @@
 
         <EditText
             android:id="@+id/login_input_user_account"
-            android:layout_width="300dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="@string/ui_login_input_account_tip"
             android:inputType="phone" />
@@ -39,7 +39,7 @@
 
         <EditText
             android:id="@+id/login_input_user_password"
-            android:layout_width="300dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="@string/ui_login_input_password_tip"
             android:inputType="textPassword" />
@@ -47,9 +47,9 @@
 
     <Button
         android:id="@+id/login_btn"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:text="@string/ui_login_btn"
         android:textSize="20dp" />
