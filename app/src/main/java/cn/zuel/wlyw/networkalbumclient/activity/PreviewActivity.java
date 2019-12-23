@@ -9,6 +9,7 @@ import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -142,7 +143,8 @@ public class PreviewActivity extends BaseActivity {
         oks.setText("分享来自网络相册的图片");
         // imagePath是图片的本地路径，确保SDcard下面存在此张图片
 //        oks.setImagePath("/sdcard/test.jpg");
-        oks.setImagePath(ServerConstantConfig.REQUEST_URL + i_path);
+        Log.d(TAG, "showShare: ------------------------>>>>>>" + Environment.getExternalStorageDirectory().getAbsolutePath());
+        oks.setImagePath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures/1577101041725.jpg");
         // url在微信、Facebook等平台中使用
         oks.setUrl("http://sharesdk.cn");
         // 启动分享GUI
